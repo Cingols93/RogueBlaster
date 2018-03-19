@@ -39,5 +39,9 @@ public final class Constant {
 	public final static int NOVICE_VIT = 5;
 	public final static int NOVICE_LCK = 5;
 	
+	public final static String MAINCHAR = "M";
+	public final static String CHEST = "C";
+	public final static String ENEMY = "E";
+	
 	
 }

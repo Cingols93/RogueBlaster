@@ -2,6 +2,7 @@ package it.consoft.rogueblaster.model;
 
 import it.consoft.rogueblaster.model.enumeration.CharEnum;
 import it.consoft.rogueblaster.model.interfaces.Entity;
+import it.consoft.rogueblaster.util.Constant;
 
 public class EnemyModel implements Entity{
 	private int Str;
@@ -72,6 +73,9 @@ public class EnemyModel implements Entity{
 		
 	}
 	
-	
+	@Override
+	public String toString() {
+		return Constant.ENEMY;
+	}
 	
 }

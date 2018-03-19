@@ -1,6 +1,7 @@
 package it.consoft.rogueblaster.model;
 
 import it.consoft.rogueblaster.model.enumeration.AttrEnum;
+import it.consoft.rogueblaster.util.Constant;
 
 public class ChestModel {
 	private AttrEnum attr;
@@ -33,4 +34,14 @@ public class ChestModel {
 			this.generateMod();
 		}
 	}
+	
+	@Override
+	public String toString() {
+		return Constant.CHEST;
+	}
+	
+	
+	
+	
+	
 }

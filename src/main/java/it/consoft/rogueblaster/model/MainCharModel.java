@@ -2,6 +2,7 @@ package it.consoft.rogueblaster.model;
 
 import it.consoft.rogueblaster.model.enumeration.CharEnum;
 import it.consoft.rogueblaster.model.interfaces.Entity;
+import it.consoft.rogueblaster.util.Constant;
 
 public class MainCharModel implements Entity{
 
@@ -49,23 +50,7 @@ public class MainCharModel implements Entity{
 		Lck = lck;
 	}
 	
-	public String toString() {
-        String message;
-        if (Vit <= 0) {
-            message = "You Died";
-        } else {
-            message = "Vit: " + Vit;
-        }
-       /* 
-        * if (Chest > 0) {
-        *	message = "Lucky! "; 
-        * } else {
-        * 	message = "Unlucky... "; 
-        * }
-        * 
-        */
-        return message;
-    }
+	
 
 	@Override
 	public boolean isDead() {
@@ -91,5 +76,9 @@ public class MainCharModel implements Entity{
 		
 	}
 	
+	@Override
+	public String toString() {
+		return Constant.MAINCHAR;
+	}
 	
 }
