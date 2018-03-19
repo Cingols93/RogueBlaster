@@ -1,7 +1,6 @@
 package it.consoft.rogueblaster.model;
 
-import it.consoft.rogueblaster.model.enumeration.MapSizeEnum;
-import it.consoft.rogueblaster.util.Tile;
+import it.consoft.rogueblaster.model.enumeration.CharEnum;
 
 public class MainCharModel {
 
@@ -11,10 +10,42 @@ public class MainCharModel {
 	private int Lck;
 
 	public MainCharModel (CharEnum charEnum) {
-		this.Str = charEnum.getStr();
-		this.Agi = charEnum.getAgi();
-		this.Vit = charEnum.getVit();
-		this.Lck = charEnum.getLck();
+		this.setStr(charEnum.getStr());
+		this.setAgi(charEnum.getAgi());
+		this.setVit(charEnum.getVit());
+		this.setLck(charEnum.getLck());
+	}
+
+	public int getStr() {
+		return Str;
+	}
+
+	public void setStr(int str) {
+		Str = str;
+	}
+
+	public int getAgi() {
+		return Agi;
+	}
+
+	public void setAgi(int agi) {
+		Agi = agi;
+	}
+
+	public int getVit() {
+		return Vit;
+	}
+
+	public void setVit(int vit) {
+		Vit = vit;
+	}
+
+	public int getLck() {
+		return Lck;
+	}
+
+	public void setLck(int lck) {
+		Lck = lck;
 	}
 	
 }
