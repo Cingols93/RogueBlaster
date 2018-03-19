@@ -4,5 +4,4 @@ public interface Entity {
 	public boolean isDead();
 	public void takeDamage(int d);
 	public int attack();
-	public void powerUp();
 }

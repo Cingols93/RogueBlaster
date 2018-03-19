@@ -4,16 +4,15 @@ import it.consoft.rogueblaster.model.enumeration.CharEnum;
 import it.consoft.rogueblaster.model.interfaces.Entity;
 import it.consoft.rogueblaster.util.Constant;
 
-public class EnemyModel implements Entity{
+public class EnemyModel implements Entity {
 	private int str;
 	private int agi;
 	private int vit;
 	private int lck;
-	
 
 	private final String indetifyJSON = Constant.ENEMY;
 
-	public EnemyModel (CharEnum charEnum) {
+	public EnemyModel(CharEnum charEnum) {
 		this.setStr(charEnum.getStr());
 		this.setAgi(charEnum.getAgi());
 		this.setVit(charEnum.getVit());
@@ -54,28 +53,31 @@ public class EnemyModel implements Entity{
 
 	@Override
 	public boolean isDead() {
-		// TODO Auto-generated method stub
+		if (this.vit <= 0)
+			return true;
 		return false;
 	}
 
 	@Override
 	public void takeDamage(int d) {
-		// TODO Auto-generated method stub
-		
+		int dmg = this.vit - d;
+		setVit(dmg);
 	}
 
 	@Override
 	public int attack() {
-		// TODO Auto-generated method stub
+		if (hitSuccess())
+			return (int) (Math.random() * str);
 		return 0;
 	}
 
-	@Override
-	public void powerUp() {
-		// TODO Auto-generated method stub
-		
+	private boolean hitSuccess() {
+		int s = (int) (Math.random() * 100) + lck;
+		if (s >= 20)
+			return true;
+		return false;
 	}
-	
+
 	@Override
 	public String toString() {
 		return Constant.ENEMY;
@@ -84,5 +86,5 @@ public class EnemyModel implements Entity{
 	public String getIndetifyJSON() {
 		return indetifyJSON;
 	}
-	
+
 }

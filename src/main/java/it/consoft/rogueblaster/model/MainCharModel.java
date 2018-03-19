@@ -55,26 +55,60 @@ public class MainCharModel implements Entity{
 
 	@Override
 	public boolean isDead() {
-		// TODO Auto-generated method stub
+		if (this.vit <= 0)
+			return true;
 		return false;
 	}
 
 	@Override
 	public void takeDamage(int d) {
-		// TODO Auto-generated method stub
-		
+		int dmg = this.vit - d;
+		setVit(dmg);
 	}
 
 	@Override
 	public int attack() {
-		// TODO Auto-generated method stub
+		if (hitSuccess())
+			return (int) (Math.random() * str);
 		return 0;
 	}
 
-	@Override
-	public void powerUp() {
-		// TODO Auto-generated method stub
-		
+	private boolean hitSuccess() {
+		int s = (int) (Math.random() * 100) + lck;
+		if (s >= 20)
+			return true;
+		return false;
+	}
+
+	public void powerUp(ChestModel chest) {
+		switch (chest.getAttr().getId()) {
+		case 1: {
+			this.str = this.str + chest.getMod();
+			if (this.str <= 0)
+				this.str = 1;
+			return;
+		}
+		case 2: {
+			this.agi = this.agi + chest.getMod();
+			if (this.agi <= 0)
+				this.agi = 1;
+			return;
+		}
+		case 3: {
+			this.vit = this.vit + chest.getMod();
+			if (this.vit <= 0)
+				this.vit = 0;
+			return;
+		}
+		case 4: {
+			this.lck = this.lck + chest.getMod();
+			if (this.lck <= 0)
+				this.lck = 0;
+			return;
+		}
+		default: return;
+		}
+
 	}
 	
 	@Override
