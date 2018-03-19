@@ -7,6 +7,8 @@ public class ChestModel {
 	private AttrEnum attr;
 	private int mod;
 
+	private final String indetifyJSON = Constant.CHEST;
+
 	public ChestModel(AttrEnum a) {
 		this.attr= a;
 		this.generateMod();
@@ -39,9 +41,10 @@ public class ChestModel {
 	public String toString() {
 		return Constant.CHEST;
 	}
-	
-	
-	
+
+	public String getIndetifyJSON() {
+		return indetifyJSON;
+	}
 	
 	
 }

@@ -6,10 +6,11 @@ import it.consoft.rogueblaster.util.Constant;
 
 public class MainCharModel implements Entity{
 
-	private int Str;
-	private int Agi;
-	private int Vit;
-	private int Lck;
+	private int str;
+	private int agi;
+	private int vit;
+	private int lck;
+	private final String indetifyJSON = Constant.MAINCHAR;
 
 	public MainCharModel (CharEnum charEnum) {
 		this.setStr(charEnum.getStr());
@@ -19,35 +20,35 @@ public class MainCharModel implements Entity{
 	}
 
 	public int getStr() {
-		return Str;
+		return str;
 	}
 
 	public void setStr(int str) {
-		Str = str;
+		this.str = str;
 	}
 
 	public int getAgi() {
-		return Agi;
+		return agi;
 	}
 
 	public void setAgi(int agi) {
-		Agi = agi;
+		this.agi = agi;
 	}
 
 	public int getVit() {
-		return Vit;
+		return vit;
 	}
 
 	public void setVit(int vit) {
-		Vit = vit;
+		this.vit = vit;
 	}
 
 	public int getLck() {
-		return Lck;
+		return lck;
 	}
 
 	public void setLck(int lck) {
-		Lck = lck;
+		this.lck = lck;
 	}
 	
 	
@@ -79,6 +80,10 @@ public class MainCharModel implements Entity{
 	@Override
 	public String toString() {
 		return Constant.MAINCHAR;
+	}
+
+	public String getIndetifyJSON() {
+		return indetifyJSON;
 	}
 	
 }

@@ -43,5 +43,41 @@ public final class Constant {
 	public final static String CHEST = "C";
 	public final static String ENEMY = "E";
 	
+	public final static String [] ROGUE_NAMES = {
+			"Astaroth",
+			"Balthier",
+			"Hollowshade",
+			"Silverbeat",
+			"Steelstrike",
+			"Blackflash",
+			"Rapidstroke",
+			"RedStrike",
+			"Killtooth"
+	};
+	
+	public final static String [] KNIGHT_NAMES = {
+			"Aliss",
+			"Grissell",
+			"Khan",
+			"Aldis",
+			"Theodric",
+			"Randal",
+			"Tedric",
+			"Gieffrinet",
+			"Perceval"
+	};
+	
+	public final static String [] NOVICE_NAMES = {
+			"Jiyroo",
+			"Tilleen",
+			"Illiya",
+			"Lisakar",
+			"Mug",
+			"Duluk",
+			"Onubub",
+			"Xaakt",
+			"Xomath"
+	};
+	
 	
 }
