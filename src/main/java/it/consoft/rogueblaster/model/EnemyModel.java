@@ -25,7 +25,7 @@ public class EnemyModel implements Entity{
 	}
 
 	public void setStr(int str) {
-		str = str;
+		this.str = str;
 	}
 
 	public int getAgi() {
@@ -33,7 +33,7 @@ public class EnemyModel implements Entity{
 	}
 
 	public void setAgi(int agi) {
-		agi = agi;
+		this.agi = agi;
 	}
 
 	public int getVit() {
@@ -41,7 +41,7 @@ public class EnemyModel implements Entity{
 	}
 
 	public void setVit(int vit) {
-		vit = vit;
+		this.vit = vit;
 	}
 
 	public int getLck() {
@@ -49,7 +49,7 @@ public class EnemyModel implements Entity{
 	}
 
 	public void setLck(int lck) {
-		lck = lck;
+		this.lck = lck;
 	}
 
 	@Override
