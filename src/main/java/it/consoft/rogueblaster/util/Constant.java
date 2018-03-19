@@ -18,6 +18,11 @@ public final class Constant {
 	public final static int MAX_TEASURES_MEDIUM = 2;
 	public final static int MAX_TEASURES_BIG = 3;
 	
+	public final static int MAX_STR = 15;
+	public final static int MAX_AGI = 15;
+	public final static int MAX_VIT = 15;
+	public final static int MAX_LCK = 15;
+	
 	public final static int ROGUE_STR = 5;
 	public final static int ROGUE_AGI = 9;
 	public final static int ROGUE_VIT = 3;
