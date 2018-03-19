@@ -1,24 +1,36 @@
 package it.consoft.rogueblaster.model;
 
 import it.consoft.rogueblaster.model.enumeration.AttrEnum;
-import it.consoft.rogueblaster.model.enumeration.CharEnum;
 
 public class ChestModel {
-	private int id;
-	private int str;
-	private int vit;
-	private int agi;
-	private int lck;
+	private AttrEnum attr;
+	private int mod;
 
-	public ChestModel(AttrEnum attrenum, CharEnum charenum) {
-		this.id= attrenum.getId();
-		this.str= charenum.getStr();
-		this.agi= charenum.getAgi();
-		this.vit= charenum.getVit();
-		this.lck= charenum.getLck();
+	public ChestModel(AttrEnum a) {
+		this.attr= a;
+		this.generateMod();
 	}
 	
-	private double powerChest(int id,int str, int vit, int agi, int lck) {
-		
+	public AttrEnum getAttr() {
+		return attr;
+	}
+
+	public void setAttr(AttrEnum attr) {
+		this.attr = attr;
+	}
+
+	public int getMod() {
+		return mod;
+	}
+
+	public void setMod(int mod) {
+		this.mod = mod;
+	}
+
+	private void generateMod(){
+		this.mod= (int) (Math.random()*4)-2;
+		if(this.mod==0) {
+			this.generateMod();
+		}
 	}
 }
