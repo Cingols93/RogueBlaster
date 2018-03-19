@@ -18,4 +18,21 @@ public final class Constant {
 	public final static int MAX_TEASURES_MEDIUM = 2;
 	public final static int MAX_TEASURES_BIG = 3;
 	
+	public final static int ROGUE_STR = 5;
+	public final static int ROGUE_AGI = 9;
+	public final static int ROGUE_VIT = 3;
+	public final static int ROGUE_LCK = 9;
+	
+
+	public final static int KNIGHT_STR = 9;
+	public final static int KNIGHT_AGI = 5;
+	public final static int KNIGHT_VIT = 9;
+	public final static int KNIGHT_LCK = 5;
+	
+	public final static int NOVICE_STR = 5;
+	public final static int NOVICE_AGI = 5;
+	public final static int NOVICE_VIT = 5;
+	public final static int NOVICE_LCK = 5;
+	
+	
 }
