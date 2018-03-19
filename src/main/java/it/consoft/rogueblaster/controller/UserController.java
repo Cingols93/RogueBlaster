@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.*;
 
 import it.consoft.rogueblaster.model.UserModel;
 import it.consoft.rogueblaster.repository.UserRepository;
-import it.consoft.rogueblaster.service.UserService;
 
 @RestController
 @RequestMapping("/user")
