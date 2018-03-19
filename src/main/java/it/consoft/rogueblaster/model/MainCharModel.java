@@ -48,4 +48,23 @@ public class MainCharModel {
 		Lck = lck;
 	}
 	
+	public String toString() {
+        String message;
+        if (Vit <= 0) {
+            message = "You Died";
+        } else {
+            message = "Vit: " + Vit;
+        }
+       /* 
+        * if (Chest > 0) {
+        *	message = "Lucky! "; 
+        * } else {
+        * 	message = "Unlucky... "; 
+        * }
+        * 
+        */
+        return message;
+    }
+	
+	
 }
