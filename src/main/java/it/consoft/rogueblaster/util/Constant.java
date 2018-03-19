@@ -23,6 +23,7 @@ public final class Constant {
 	public final static int ROGUE_VIT = 3;
 	public final static int ROGUE_LCK = 9;
 	
+
 	public final static int KNIGHT_STR = 9;
 	public final static int KNIGHT_AGI = 5;
 	public final static int KNIGHT_VIT = 9;
@@ -32,4 +33,6 @@ public final class Constant {
 	public final static int NOVICE_AGI = 5;
 	public final static int NOVICE_VIT = 5;
 	public final static int NOVICE_LCK = 5;
+	
+	
 }
