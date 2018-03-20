@@ -54,7 +54,7 @@ public class GameController {
 			this.setup();
 			return this.map.toJSON();
 		}
-		return "Visualizzazione personaggio\nPulsanti inizio partita\nGuida base del gioco";
+		return this.mc.toJSON();
 	}
 
 	@PostMapping(value = "/start")
@@ -128,6 +128,7 @@ public class GameController {
 				this.charCoords[1] = newY;
 			}
 			System.out.println("New coords: " + newX + " " + newY);
+			System.out.println(this.mc.toJSON());
 			System.out.println(this.map);
 		} catch (IndexOutOfBoundsException e) {
 			return;

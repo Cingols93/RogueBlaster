@@ -106,8 +106,14 @@ public class MainCharModel implements Entity {
 
 	@Override
 	public int attack() {
-		if (hitSuccess())
-			return (int) (Math.random() * str);
+		if (hitSuccess()) {
+			int mod = 0;
+			int s = (int) (Math.random() * 100) + agi;
+			if (s >= 50)
+				mod = str + ((int) str / 2);
+			return ((int) (Math.random() * str)) + mod;
+		}
+
 		return 0;
 	}
 

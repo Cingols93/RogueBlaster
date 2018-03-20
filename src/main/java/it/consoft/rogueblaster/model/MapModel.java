@@ -129,11 +129,17 @@ public class MapModel {
 	}
 
 	public boolean isContentEnemy(int x, int y) {
-		return false;
+		if (this.map.get(y).get(x).getContent().getClass() == EnemyModel.class)
+			return true;
+		else
+			return false;
 	}
 
 	public boolean isContentTeasure(int x, int y) {
-		return false;
+		if (this.map.get(y).get(x).getContent().getClass() == ChestModel.class)
+			return true;
+		else
+			return false;
 	}
 
 	public boolean isContentStair(int x, int y) {
@@ -159,7 +165,7 @@ public class MapModel {
 		} else if (this.isContentEnemy(dx, dy)) {
 			this.attackContent();
 		} else if (this.isContentTeasure(dx, dy)) {
-			this.teasureContent();
+			this.teasureContent(sx, sy, dx, dy);
 		} else if (this.isContentStair(dx, dy)) {
 			// nulla al momento
 
@@ -168,11 +174,16 @@ public class MapModel {
 	}
 
 	public void attackContent() {
-		// se si sta andando nella casella con un nemico
+		// se si sta andando nella casella con un nemico shish
 	}
 
-	public void teasureContent() {
-		// se si sta andando nella casella con un tesoro
+	public void teasureContent(int sx, int sy, int dx, int dy) {
+		ChestModel c = (ChestModel) this.map.get(dy).get(dx).getContent();
+		MainCharModel mc = (MainCharModel) this.map.get(sy).get(sx).getContent();
+		this.getTile(dx, dy).setContent(mc);
+		this.getTile(sx, sy).setContent(null);
+		mc.powerUp(c);
+
 	}
 
 	@Override
