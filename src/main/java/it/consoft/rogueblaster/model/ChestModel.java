@@ -10,10 +10,10 @@ public class ChestModel {
 	private final String indetifyJSON = Constant.CHEST;
 
 	public ChestModel(AttrEnum a) {
-		this.attr= a;
+		this.attr = a;
 		this.generateMod();
 	}
-	
+
 	public AttrEnum getAttr() {
 		return attr;
 	}
@@ -30,13 +30,13 @@ public class ChestModel {
 		this.mod = mod;
 	}
 
-	private void generateMod(){
-		this.mod= (int) (Math.random()*4)-2;
-		if(this.mod==0) {
+	private void generateMod() {
+		this.mod = (int) (Math.random() * 4) - 2;
+		if (this.mod == 0) {
 			this.generateMod();
 		}
 	}
-	
+
 	@Override
 	public String toString() {
 		return Constant.CHEST;
@@ -45,6 +45,5 @@ public class ChestModel {
 	public String getIndetifyJSON() {
 		return indetifyJSON;
 	}
-	
-	
+
 }

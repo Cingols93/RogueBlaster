@@ -1,6 +1,5 @@
 package it.consoft.rogueblaster.model;
 
-import it.consoft.rogueblaster.model.enumeration.CharEnum;
 import it.consoft.rogueblaster.model.interfaces.Entity;
 import it.consoft.rogueblaster.util.Constant;
 
@@ -49,10 +48,19 @@ public class EnemyModel implements Entity {
 	}
 
 	private void randomizeClassAttr() {
-		this.setStr(CharEnum.NOVICE.getStr() + ((int) (Math.random() * 2)) - 1);
-		this.setAgi(CharEnum.NOVICE.getAgi() + ((int) (Math.random() * 2)) - 1);
-		this.setVit(CharEnum.NOVICE.getVit() + ((int) (Math.random() * 2)) - 1);
-		this.setLck(CharEnum.NOVICE.getLck() + ((int) (Math.random() * 2)) - 1);
+		this.str = this.agi = this.vit = this.lck = 0;
+		while (this.str <= 0) {
+			this.generateAttr(1);
+		}
+		while (this.agi <= 0) {
+			this.generateAttr(2);
+		}
+		while (this.vit <= 0) {
+			this.generateAttr(3);
+		}
+		while (this.lck <= 0) {
+			this.generateAttr(4);
+		}
 	}
 
 	@Override
@@ -89,6 +97,38 @@ public class EnemyModel implements Entity {
 
 	public String getIndetifyJSON() {
 		return indetifyJSON;
+	}
+
+	private void generateAttr(int i) {
+		switch (i) {
+		case 1: {
+			this.str = (int) (Math.random() * 5) + 1;
+			if (this.str == 0) {
+				this.generateAttr(1);
+			}
+		}
+		case 2: {
+			this.agi = (int) (Math.random() * 5) + 1;
+			if (this.agi == 0) {
+				this.generateAttr(2);
+			}
+		}
+		case 3: {
+			this.vit = (int) (Math.random() * 5) + 1;
+			if (this.vit == 0) {
+				this.generateAttr(3);
+			}
+		}
+		case 4: {
+			this.lck = (int) (Math.random() * 5) + 1;
+			if (this.lck == 0) {
+				this.generateAttr(4);
+			}
+		}
+		default: {
+			break;
+		}
+		}
 	}
 
 }

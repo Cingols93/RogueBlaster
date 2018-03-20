@@ -3,15 +3,11 @@ package it.consoft.rogueblaster.model;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.w3c.dom.Attr;
-
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
-import it.consoft.rogueblaster.model.enumeration.AttrEnum;
-import it.consoft.rogueblaster.model.enumeration.CharEnum;
-import it.consoft.rogueblaster.model.enumeration.ClassCharEnum;
 import it.consoft.rogueblaster.model.enumeration.MapSizeEnum;
+import it.consoft.rogueblaster.util.Constant;
 import it.consoft.rogueblaster.util.Tile;
 
 public class MapModel {
@@ -20,6 +16,10 @@ public class MapModel {
 
 	private int width;
 	private int height;
+
+	private MapSizeEnum size;
+	private int maxEnemy;
+	private int maxTeasure;
 
 	public MapModel() {
 		this.width = MapSizeEnum.SMALL.getWidth();
@@ -32,6 +32,9 @@ public class MapModel {
 			}
 			this.map.add(row);
 		}
+		this.size = MapSizeEnum.SMALL;
+		this.maxEnemy = Constant.MAX_ENEMY_SPAWN_SMALL;
+		this.maxTeasure = Constant.MAX_TEASURES_SMALL;
 	}
 
 	public MapModel(MapSizeEnum mapSize) {
@@ -44,6 +47,17 @@ public class MapModel {
 				row.add(new Tile(j, i));
 			}
 			this.map.add(row);
+		}
+		this.size = mapSize;
+		if (mapSize.equals(MapSizeEnum.SMALL)) {
+			this.maxEnemy = Constant.MAX_ENEMY_SPAWN_SMALL;
+			this.maxTeasure = Constant.MAX_TEASURES_SMALL;
+		} else if (mapSize.equals(MapSizeEnum.MEDIUM)) {
+			this.maxEnemy = Constant.MAX_ENEMY_SPAWN_MEDIUM;
+			this.maxTeasure = Constant.MAX_TEASURES_MEDIUM;
+		} else {
+			this.maxEnemy = Constant.MAX_ENEMY_SPAWN_BIG;
+			this.maxTeasure = Constant.MAX_TEASURES_BIG;
 		}
 	}
 
@@ -71,6 +85,30 @@ public class MapModel {
 		this.height = height;
 	}
 
+	public MapSizeEnum getSize() {
+		return size;
+	}
+
+	public void setSize(MapSizeEnum size) {
+		this.size = size;
+	}
+
+	public int getMaxEnemy() {
+		return maxEnemy;
+	}
+
+	public void setMaxEnemy(int maxEnemy) {
+		this.maxEnemy = maxEnemy;
+	}
+
+	public int getMaxTeasure() {
+		return maxTeasure;
+	}
+
+	public void setMaxTeasure(int maxTeasure) {
+		this.maxTeasure = maxTeasure;
+	}
+
 	private boolean validPosition(int x, int y) {
 		if (x < 0 || x > this.width)
 			return false;
@@ -83,8 +121,11 @@ public class MapModel {
 		return this.map.get(y).get(x);
 	}
 
-	public boolean isTileEmpty(int x, int y) {
-		return (this.map.get(y).get(x) == null) ? true : false;
+	private boolean isTileEmpty(int x, int y) {
+		if (this.map.get(y).get(x).getContent() == null)
+			return true;
+		else
+			return false;
 	}
 
 	public boolean isContentEnemy(int x, int y) {
@@ -99,12 +140,22 @@ public class MapModel {
 		return false;
 	}
 
-	public void moveContent(int sx, int sy, int dx, int dy) {
-		if (this.validPosition(sx, sy) && this.validPosition(dx, dy))
-			return;
+	public boolean setTileContent(int x, int y, Object content) {
+
+		if (this.getTile(x, y).getContent() == null) {
+			this.getTile(x, y).setContent(content);
+			return true;
+		}
+		return false;
+	}
+
+	public boolean moveContent(int sx, int sy, int dx, int dy) {
+		if (!this.validPosition(sx, sy) || !this.validPosition(dx, dy))
+			return false;
 		if (this.isTileEmpty(dx, dy)) {
 			this.getTile(dx, dy).setContent(this.getTile(sx, sy).getContent());
 			this.getTile(sx, sy).setContent(null);
+			return true;
 		} else if (this.isContentEnemy(dx, dy)) {
 			this.attackContent();
 		} else if (this.isContentTeasure(dx, dy)) {
@@ -113,6 +164,7 @@ public class MapModel {
 			// nulla al momento
 
 		}
+		return false;
 	}
 
 	public void attackContent() {
@@ -125,9 +177,7 @@ public class MapModel {
 
 	@Override
 	public String toString() {
-
 		String s = "";
-
 		for (int i = 0; i < this.height; i++) {
 			for (int j = 0; j < this.width; j++) {
 				if (this.getTile(j, i).getContent() != null)
@@ -138,8 +188,7 @@ public class MapModel {
 			}
 			s += "\n";
 		}
-
-		return "MapModel [map=" + map + ", width=" + width + ", height=" + height + "]\n" + s + "\n" + this.toJSON();
+		return s;
 	}
 
 	public String toJSON() {
@@ -147,11 +196,4 @@ public class MapModel {
 		return gson.toJson(this.map);
 	}
 
-	public static void main(String[] args) {
-		MapModel m = new MapModel(MapSizeEnum.MEDIUM);
-		m.getTile(1, 2).setContent(new MainCharModel(CharEnum.KNIGHT, ClassCharEnum.KNIGHT));
-		m.getTile(6, 5).setContent(new ChestModel(AttrEnum.STR));
-		m.getTile(9, 9).setContent(new EnemyModel());
-		System.out.println(m.toString());
-	}
 }

@@ -12,7 +12,7 @@ public enum AttrEnum {
 		return id;
 	}
 	
-	public AttrEnum getById(int i) {
+	public static AttrEnum getById(int i) {
 		switch(i) {
 		case 1: return AttrEnum.STR;
 		case 2: return AttrEnum.AGI;

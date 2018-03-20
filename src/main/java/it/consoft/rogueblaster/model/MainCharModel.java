@@ -4,7 +4,6 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.consoft.rogueblaster.model.enumeration.CharEnum;
-import it.consoft.rogueblaster.model.enumeration.ClassCharEnum;
 import it.consoft.rogueblaster.model.interfaces.Entity;
 import it.consoft.rogueblaster.util.Constant;
 
@@ -18,9 +17,15 @@ public class MainCharModel implements Entity {
 	private final String indetifyJSON = Constant.MAINCHAR;
 	private int identifyCharJSON;
 
-	public MainCharModel(CharEnum charEnum, ClassCharEnum classChar) {
-		this.randomizeClassAttr(charEnum);
-		this.identifyCharJSON = classChar.getIdClassChar();
+	private String name;
+
+	private CharEnum charClass;
+
+	public MainCharModel() {
+		this.charClass = (CharEnum.getById((int) (Math.random() * 3) + 1));
+		this.randomizeClassAttr(this.charClass);
+		this.identifyCharJSON = this.charClass.getId();
+		this.name = this.nameChar();
 	}
 
 	public int getIdentifyCharJSON() {
@@ -61,6 +66,22 @@ public class MainCharModel implements Entity {
 
 	public void setLck(int lck) {
 		this.lck = lck;
+	}
+
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public CharEnum getCharClass() {
+		return charClass;
+	}
+
+	public void setCharClass(CharEnum charClass) {
+		this.charClass = charClass;
 	}
 
 	private void randomizeClassAttr(CharEnum charEnum) {
@@ -137,9 +158,9 @@ public class MainCharModel implements Entity {
 
 	}
 
-	public String nameChar(ClassCharEnum clsId) {
-		int i = (int) (Math.random() * 10);
-		switch (clsId.getIdClassChar()) {
+	private String nameChar() {
+		int i = (int) (Math.random() * 9);
+		switch (this.charClass.getId()) {
 		case 1:
 			return Constant.KNIGHT_NAMES[i];
 		case 2:

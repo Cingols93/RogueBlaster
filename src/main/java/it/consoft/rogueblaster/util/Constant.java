@@ -1,6 +1,7 @@
 package it.consoft.rogueblaster.util;
 
 public final class Constant {
+	
 	public final static int MAP_WIDTH_SMALL = 10;
 	public final static int MAP_HEIGHT_SMALL = 5;
 	
