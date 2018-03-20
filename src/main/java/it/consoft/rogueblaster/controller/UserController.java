@@ -26,7 +26,6 @@ public class UserController {
 
 	@PostMapping("/saveUser")
 	public ResponseEntity<UserModel> saveUser(@RequestBody UserModel user) {
-
 		try {
 			UserModel saved = userRepository.save(user);
 			logger.info("Saved : " + saved);

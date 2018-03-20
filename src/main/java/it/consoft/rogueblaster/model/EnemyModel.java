@@ -12,11 +12,8 @@ public class EnemyModel implements Entity {
 
 	private final String indetifyJSON = Constant.ENEMY;
 
-	public EnemyModel(CharEnum charEnum) {
-		this.setStr(charEnum.getStr());
-		this.setAgi(charEnum.getAgi());
-		this.setVit(charEnum.getVit());
-		this.setLck(charEnum.getLck());
+	public EnemyModel() {
+		this.randomizeClassAttr();
 	}
 
 	public int getStr() {
@@ -49,6 +46,13 @@ public class EnemyModel implements Entity {
 
 	public void setLck(int lck) {
 		this.lck = lck;
+	}
+
+	private void randomizeClassAttr() {
+		this.setStr(CharEnum.NOVICE.getStr() + ((int) (Math.random() * 2)) - 1);
+		this.setAgi(CharEnum.NOVICE.getAgi() + ((int) (Math.random() * 2)) - 1);
+		this.setVit(CharEnum.NOVICE.getVit() + ((int) (Math.random() * 2)) - 1);
+		this.setLck(CharEnum.NOVICE.getLck() + ((int) (Math.random() * 2)) - 1);
 	}
 
 	@Override

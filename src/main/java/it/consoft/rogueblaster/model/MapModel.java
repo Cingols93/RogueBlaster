@@ -3,11 +3,14 @@ package it.consoft.rogueblaster.model;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.w3c.dom.Attr;
+
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.consoft.rogueblaster.model.enumeration.AttrEnum;
 import it.consoft.rogueblaster.model.enumeration.CharEnum;
+import it.consoft.rogueblaster.model.enumeration.ClassCharEnum;
 import it.consoft.rogueblaster.model.enumeration.MapSizeEnum;
 import it.consoft.rogueblaster.util.Tile;
 
@@ -17,6 +20,19 @@ public class MapModel {
 
 	private int width;
 	private int height;
+
+	public MapModel() {
+		this.width = MapSizeEnum.SMALL.getWidth();
+		this.height = MapSizeEnum.SMALL.getHeight();
+		this.map = new ArrayList<List<Tile>>();
+		for (int i = 0; i < this.height; i++) {
+			ArrayList<Tile> row = new ArrayList<Tile>();
+			for (int j = 0; j < this.width; j++) {
+				row.add(new Tile(j, i));
+			}
+			this.map.add(row);
+		}
+	}
 
 	public MapModel(MapSizeEnum mapSize) {
 		this.width = mapSize.getWidth();
@@ -95,7 +111,7 @@ public class MapModel {
 			this.teasureContent();
 		} else if (this.isContentStair(dx, dy)) {
 			// nulla al momento
-			
+
 		}
 	}
 
@@ -127,14 +143,15 @@ public class MapModel {
 	}
 
 	public String toJSON() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();;
+		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
 		return gson.toJson(this.map);
 	}
 
 	public static void main(String[] args) {
 		MapModel m = new MapModel(MapSizeEnum.MEDIUM);
-		m.getTile(1, 2).setContent(new MainCharModel(CharEnum.KNIGHT));
+		m.getTile(1, 2).setContent(new MainCharModel(CharEnum.KNIGHT, ClassCharEnum.KNIGHT));
 		m.getTile(6, 5).setContent(new ChestModel(AttrEnum.STR));
+		m.getTile(9, 9).setContent(new EnemyModel());
 		System.out.println(m.toString());
 	}
 }

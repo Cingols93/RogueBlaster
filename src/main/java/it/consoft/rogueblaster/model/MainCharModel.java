@@ -1,5 +1,8 @@
 package it.consoft.rogueblaster.model;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import it.consoft.rogueblaster.model.enumeration.CharEnum;
 import it.consoft.rogueblaster.model.enumeration.ClassCharEnum;
 import it.consoft.rogueblaster.model.interfaces.Entity;
@@ -13,12 +16,19 @@ public class MainCharModel implements Entity {
 	private int lck;
 
 	private final String indetifyJSON = Constant.MAINCHAR;
+	private int identifyCharJSON;
 
-	public MainCharModel(CharEnum charEnum) {
-		this.setStr(charEnum.getStr());
-		this.setAgi(charEnum.getAgi());
-		this.setVit(charEnum.getVit());
-		this.setLck(charEnum.getLck());
+	public MainCharModel(CharEnum charEnum, ClassCharEnum classChar) {
+		this.randomizeClassAttr(charEnum);
+		this.identifyCharJSON = classChar.getIdClassChar();
+	}
+
+	public int getIdentifyCharJSON() {
+		return identifyCharJSON;
+	}
+
+	public void setIdentifyCharJSON(int identifyCharJSON) {
+		this.identifyCharJSON = identifyCharJSON;
 	}
 
 	public int getStr() {
@@ -51,6 +61,13 @@ public class MainCharModel implements Entity {
 
 	public void setLck(int lck) {
 		this.lck = lck;
+	}
+
+	private void randomizeClassAttr(CharEnum charEnum) {
+		this.setStr(charEnum.getStr() + ((int) (Math.random() * 2)) - 1);
+		this.setAgi(charEnum.getAgi() + ((int) (Math.random() * 2)) - 1);
+		this.setVit(charEnum.getVit() + ((int) (Math.random() * 2)) - 1);
+		this.setLck(charEnum.getLck() + ((int) (Math.random() * 2)) - 1);
 	}
 
 	@Override
@@ -132,6 +149,11 @@ public class MainCharModel implements Entity {
 		default:
 			return null;
 		}
+	}
+
+	public String toJSON() {
+		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+		return gson.toJson(this);
 	}
 
 	@Override
