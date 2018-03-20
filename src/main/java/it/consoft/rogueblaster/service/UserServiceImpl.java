@@ -12,4 +12,5 @@ public class UserServiceImpl implements UserService {
 	public UserModel save(UserModel user) {
 		return userRepository.save(user);
 	}
+	
 }

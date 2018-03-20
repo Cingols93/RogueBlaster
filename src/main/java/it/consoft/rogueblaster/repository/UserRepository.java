@@ -5,5 +5,6 @@ import org.springframework.data.repository.CrudRepository;
 import it.consoft.rogueblaster.model.UserModel;
 
 public interface UserRepository extends CrudRepository<UserModel, Integer> {
-	
+
+	UserModel findByUsernameAndPassword(String username, String password);
 }

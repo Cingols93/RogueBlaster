@@ -22,8 +22,8 @@ public class UserModel {
 	@Column(name = "password")
 	private String password;
 
-	@Column(name = "nickname", unique = true)
-	private String nickname;
+	@Column(name = "username", unique = true)
+	private String username;
 
 	@Column(name = "nome")
 	private String nome;
@@ -52,11 +52,11 @@ public class UserModel {
 	public void setPassword(String password) {
 		this.password= password;
 	}
-	public String getNickname() {
-		return nickname;
+	public String getUsername() {
+		return username;
 	}
-	public void setNickanme(String nickname) {
-		this.nickname=nickname;
+	public void setUsername(String username) {
+		this.username=username;
 	}
 	public String getNome() {
 		return nome;
@@ -72,7 +72,7 @@ public class UserModel {
 	}
 	@Override
 	public String toString() {
-		return "User [id=" + id + ", email=" + email + ", password=" + password + ", nickname=" + nickname + ", nome="
+		return "User [id=" + id + ", email=" + email + ", password=" + password + ", username=" + username + ", nome="
 				+ nome + ", cognome=" + cognome + "]";
 	}
 	}
