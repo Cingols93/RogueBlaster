@@ -21,8 +21,9 @@ public class MapModel {
 	private MapSizeEnum size;
 	private int maxEnemy;
 	private int maxTeasure;
-	
+
 	private boolean mainAlive;
+	private boolean enemySlayed;
 
 	public MapModel() {
 		this.width = MapSizeEnum.SMALL.getWidth();
@@ -120,6 +121,14 @@ public class MapModel {
 		this.mainAlive = mainAlive;
 	}
 
+	public boolean isEnemySlayed() {
+		return enemySlayed;
+	}
+
+	public void setEnemySlayed(boolean enemySlayed) {
+		this.enemySlayed = enemySlayed;
+	}
+
 	private boolean validPosition(int x, int y) {
 		if (x < 0 || x > this.width)
 			return false;
@@ -166,50 +175,53 @@ public class MapModel {
 		return false;
 	}
 
-	public boolean moveMainChar(int sx, int sy, int dx, int dy) {
+	public int moveMainChar(int sx, int sy, int dx, int dy) {
 		if (!this.validPosition(sx, sy) || !this.validPosition(dx, dy))
-			return false;
+			return -1;
 		if (this.isTileEmpty(dx, dy)) {
 			this.getTile(dx, dy).setContent(this.getTile(sx, sy).getContent());
 			this.getTile(sx, sy).setContent(null);
-			return true;
+			return 0;
 		} else if (this.isContentEnemy(dx, dy)) {
-			this.attackContent(this.getTile(sx, sy),this.getTile(dx, dy));
+			if (this.attackContent(this.getTile(sx, sy), this.getTile(dx, dy))) {
+				this.getTile(dx, dy).setContent(this.getTile(sx, sy).getContent());
+				this.getTile(sx, sy).setContent(null);
+				this.setEnemySlayed(true);
+				return 1;
+			}
+			return 2;
 		} else if (this.isContentTeasure(dx, dy)) {
 			this.teasureContent(sx, sy, dx, dy);
+			return 0;
 		} else if (this.isContentStair(dx, dy)) {
 			// nulla al momento
 
 		}
-		return false;
+		return -1;
 	}
-	
+
 	/*
-	 *  1 = MainChar DEAD
-	 * -1 = Null
-	 *  0 = Move
-	 *  2 = Attack
+	 * 1 = MainChar DEAD -1 = Null 0 = Move 2 = Attack
 	 */
 	public int moveEnemy(int sx, int sy, int dx, int dy) {
 		int[] checkMain = this.checkAround(sx, sy);
 		if (checkMain[0] != -1) {
-			System.out.println("Il nemico Attacca!!!!!! D'oh");
 			Tile tEnemy = this.getTile(sx, sy);
 			Tile tMain = this.getTile(checkMain[0], checkMain[1]);
+			System.out.println(tEnemy.getContent().toString());
+			System.out.println(tMain.getContent().toString());
 			if (this.attackContent(tEnemy, tMain)) {
 				this.setMainAlive(false);
-				return 1; 
+				return 1;
 			}
 			return 2;
-		} else if (!this.validPosition(sx, sy) || !this.validPosition(dx, dy)) {
+		} else if (!this.validPosition(sx, sy) || !this.validPosition(dx, dy) || (sx == dx && sy == dy)) {
 			return -1;
 		} else if (this.isTileEmpty(dx, dy)) {
 			this.getTile(dx, dy).setContent(this.getTile(sx, sy).getContent());
 			this.getTile(sx, sy).setContent(null);
 			return 0;
-		} else if (this.getTile(dx, dy).getContent().getClass().equals(ChestModel.class)
-				|| this.getTile(dx, dy).getContent().getClass().equals(EnemyModel.class))
-			return -1;
+		}
 		return -1;
 	}
 
@@ -219,9 +231,11 @@ public class MapModel {
 		for (int j = y - 1; j <= y + 1; j++) {
 			for (int k = x - 1; k <= x + 1; k++) {
 				if (this.validPosition(k, j)) {
-					if (this.getTile(k, j).getContent() != null && this.getTile(k, j).getContent().getClass() == (MainCharModel.class)) {
+					if (this.getTile(k, j).getContent() != null
+							&& this.getTile(k, j).getContent().getClass() == (MainCharModel.class)) {
 						rs[0] = k;
 						rs[1] = j;
+						System.out.println("Il nemico si guarda attorno" + k + " " + j);
 						return rs;
 					}
 				}
@@ -240,8 +254,9 @@ public class MapModel {
 		int dmg = a.attack();
 		System.out.println("Danno effettuato: " + dmg);
 		d.takeDamage(dmg);
-		if (d.isDead()) return true;
-		
+		if (d.isDead())
+			return true;
+
 		return false;
 	}
 
@@ -251,7 +266,6 @@ public class MapModel {
 		this.getTile(dx, dy).setContent(mc);
 		this.getTile(sx, sy).setContent(null);
 		mc.powerUp(c);
-
 	}
 
 	@Override
@@ -262,7 +276,7 @@ public class MapModel {
 				if (this.getTile(j, i).getContent() != null)
 					s += this.getTile(j, i).getContent().toString();
 				else
-					s += "O";
+					s += "-";
 				s += " ";
 			}
 			s += "\n";

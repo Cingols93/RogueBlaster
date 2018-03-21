@@ -87,7 +87,8 @@ public class GameController {
 
 		int[] coords = this.generateCoords();
 		while (!this.map.setTileContent(coords[0], coords[1], this.mc)) {
-			System.out.println("Inserimento mainCharacter non riuscito alle coordinate: " + coords[0] + "," + coords[1]);
+			System.out
+					.println("Inserimento mainCharacter non riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 		}
 		this.charCoords = coords;
 		this.map.setMainAlive(true);
@@ -103,8 +104,8 @@ public class GameController {
 			}
 			this.enemiesCoords.add(coords);
 			System.out.println("Inserimento Enemy " + i + " riuscito alle coordinate: " + coords[0] + "," + coords[1]);
-		}
-		
+		} System.out.println(this.enemiesCoords.toString());
+
 		// blocco tesoro
 		for (int i = 0; i < this.map.getMaxTeasure(); i++) {
 			chest = new ChestModel((AttrEnum.getById((int) (Math.random() * 4) + 1)));
@@ -127,34 +128,67 @@ public class GameController {
 		return result;
 	}
 
-	@Scheduled(fixedRate = 2000, initialDelay = 10000)
+	@Scheduled(fixedRate = 20000, initialDelay = 10000)
 	private void simulate() {
+		int turn = -1;
+		int newX = 0, newY = 0;
 		try {
-			int newX = this.charCoords[0] + ((int) (Math.random() * 3)) - 1;
-			int newY = this.charCoords[1] + ((int) (Math.random() * 3)) - 1;
-			while (!this.map.moveMainChar(this.charCoords[0], this.charCoords[1], newX, newY)) {
+			while (turn == -1) {
 				newX = this.charCoords[0] + ((int) (Math.random() * 3)) - 1;
 				newY = this.charCoords[1] + ((int) (Math.random() * 3)) - 1;
+				turn = this.map.moveMainChar(this.charCoords[0], this.charCoords[1], newX, newY);
 			}
-			this.charCoords[0] = newX;
-			this.charCoords[1] = newY;
-			for (int i = 0; i < this.enemiesCoords.size(); i++) {
-				newX = this.enemiesCoords.get(i)[0] + ((int) (Math.random() * 3)) - 1;
-				newY = this.enemiesCoords.get(i)[1] + ((int) (Math.random() * 3)) - 1;
-				while (this.map.moveEnemy(this.enemiesCoords.get(i)[0], this.enemiesCoords.get(i)[1], newX, newY) == -1 ) {
-					newX = this.enemiesCoords.get(i)[0] + ((int) (Math.random() * 3)) - 1;
-					newY = this.enemiesCoords.get(i)[1] + ((int) (Math.random() * 3)) - 1;
+			System.out.println("Mossa Main Char: " + newX + " " + newY + "\n" + this.map);
+			if (this.map.isEnemySlayed()) {
+				this.map.setEnemySlayed(false);
+				for (int[] a : this.enemiesCoords) {
+					if (a[0] == newX && a[1] == newY) {
+						System.out.println("Nemico rimosso dall'array");
+						this.enemiesCoords.remove(a);
+					}
 				}
-				if (!this.map.isMainAlive()) {
+				System.out.println("Nemico ucciso. " + "\n" + this.map);
+				if (this.enemiesCoords.size() == 0) {
+					System.out.println(this.map);
 					System.exit(0);
 				}
-				this.enemiesCoords.get(i)[0] = newX;
-				this.enemiesCoords.get(i)[1] = newY;
+			}
+			if (turn == 0) {
+				System.out.println("Mi muovo: " + newX + " " + newY);
+				this.charCoords[0] = newX;
+				this.charCoords[1] = newY;
+			}
+			if (turn == 2) {
+				System.out.println("Attacco");
+			}
+			turn = -1;
+			for (int i = 0; i < this.enemiesCoords.size(); i++) {
+				System.out.println("Mossa del nemico " + i );
+				while (turn == -1) {
+					newX = this.enemiesCoords.get(i)[0] + ((int) (Math.random() * 3)) - 1;
+					newY = this.enemiesCoords.get(i)[1] + ((int) (Math.random() * 3)) - 1;
+					System.out.println(this.enemiesCoords.get(i)[0]);
+					System.out.println(this.enemiesCoords.get(i)[1]);
+					turn = this.map.moveEnemy(this.enemiesCoords.get(i)[0], this.enemiesCoords.get(i)[1], newX, newY);
+				}
+				if (!this.map.isMainAlive()) {
+					System.out.println(this.map);
+					System.exit(0);
+				}
+				if (turn == 0) {
+					this.enemiesCoords.get(i)[0] = newX;
+					this.enemiesCoords.get(i)[1] = newY;
+					System.out.println(this.enemiesCoords.get(i)[0]);
+					System.out.println(this.enemiesCoords.get(i)[1]);
+					System.out.println("Nemico si muove: " + newX + " " + newY);
+				}
+				if (turn == 2) {
+					System.out.println("Il nemico attacca: " + newX + " " + newY);
+				}
+				turn = -1;
 			}
 			System.out.println(this.mc.toJSON());
 			System.out.println("Main: " + this.charCoords[0] + " " + this.charCoords[1]);
-			System.out.println("Enemy one: " + this.enemiesCoords.get(1)[0] + " " + this.enemiesCoords.get(1)[1]);
-			System.out.println("Enemy two: " + this.enemiesCoords.get(0)[0] + " " + this.enemiesCoords.get(0)[1]);
 			System.out.println("Main Life: " + this.mc.getVit());
 			System.out.println(this.map);
 		} catch (IndexOutOfBoundsException e) {
