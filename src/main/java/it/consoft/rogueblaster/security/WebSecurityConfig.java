@@ -33,11 +33,10 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-		http.httpBasic().and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/**").permitAll()
+		http.httpBasic().and().authorizeRequests().antMatchers(HttpMethod.OPTIONS, "/*").permitAll()
 				.antMatchers("/getusermodel", "/register").permitAll().antMatchers("/login", "/register").permitAll()
-				.antMatchers("/cartacredito/**", "/prodotto/**").hasAnyRole("USER", "ADMIN", "DBA").anyRequest()
-				.authenticated().and().logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll()
-				.and().csrf().disable();
+				.antMatchers().hasAnyRole("USER", "ADMIN", "DBA").anyRequest().authenticated().and().logout()
+				.logoutRequestMatcher(new AntPathRequestMatcher("/logout")).permitAll().and().csrf().disable();
 	}
 
 	@Bean

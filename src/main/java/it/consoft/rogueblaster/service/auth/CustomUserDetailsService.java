@@ -16,26 +16,28 @@ import org.springframework.transaction.annotation.Transactional;
 import it.consoft.rogueblaster.model.User;
 import it.consoft.rogueblaster.service.UserService;
 
-
 @Service
-public class CustomUserDetailsService implements UserDetailsService{
-	
+public class CustomUserDetailsService implements UserDetailsService {
+
 	@Autowired
 	private UserService userService;
-	
+
 	private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class.getName());
 
 	@Override
 	@Transactional(readOnly = true)
 	public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
 		User user = userService.findByUsername(username);
+		org.springframework.security.core.userdetails.User userSpring;
 		logger.info("Richiesta user: " + username);
 		if (user == null) {
 			logger.info("User not found");
 			throw new UsernameNotFoundException("Username not found");
 		}
-		return new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true,
+		userSpring = new org.springframework.security.core.userdetails.User(user.getUsername(), user.getPassword(), true,
 				true, true, true, getGrantedAuthorities(user));
+		
+		return userSpring;
 	}
 
 	private List<GrantedAuthority> getGrantedAuthorities(User user) {

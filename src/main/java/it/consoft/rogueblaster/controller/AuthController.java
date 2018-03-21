@@ -2,6 +2,7 @@ package it.consoft.rogueblaster.controller;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
@@ -35,8 +36,12 @@ public class AuthController {
 	private PasswordEncoder encoder;
 
 	@PostMapping("/login")
-	public UserDetails authenticate(@RequestBody User principal) throws Exception {
-		return authService.authenticate(principal);
+	public UserDetails authenticate(@RequestBody User principal, HttpSession session) throws Exception {
+
+		UserDetails ud = authService.authenticate(principal);
+
+		session.setAttribute("user", userService.findByUsername(ud.getUsername()));
+		return ud;
 	}
 
 	@PostMapping("/register")
