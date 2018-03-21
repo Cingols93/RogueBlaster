@@ -100,8 +100,7 @@ public class MainCharModel implements Entity {
 
 	@Override
 	public void takeDamage(int d) {
-		int dmg = this.vit - d;
-		setVit(dmg);
+		this.vit -= d;
 	}
 
 	@Override
@@ -179,7 +178,8 @@ public class MainCharModel implements Entity {
 	}
 
 	public String toJSON() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+		// Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
+		Gson gson = new GsonBuilder().create();
 		return gson.toJson(this);
 	}
 

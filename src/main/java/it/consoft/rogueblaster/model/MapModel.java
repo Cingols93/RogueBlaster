@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.consoft.rogueblaster.model.enumeration.MapSizeEnum;
+import it.consoft.rogueblaster.model.interfaces.Entity;
 import it.consoft.rogueblaster.util.Constant;
 import it.consoft.rogueblaster.util.Tile;
 
@@ -20,6 +21,8 @@ public class MapModel {
 	private MapSizeEnum size;
 	private int maxEnemy;
 	private int maxTeasure;
+	
+	private boolean mainAlive;
 
 	public MapModel() {
 		this.width = MapSizeEnum.SMALL.getWidth();
@@ -109,6 +112,14 @@ public class MapModel {
 		this.maxTeasure = maxTeasure;
 	}
 
+	public boolean isMainAlive() {
+		return mainAlive;
+	}
+
+	public void setMainAlive(boolean mainAlive) {
+		this.mainAlive = mainAlive;
+	}
+
 	private boolean validPosition(int x, int y) {
 		if (x < 0 || x > this.width)
 			return false;
@@ -155,7 +166,7 @@ public class MapModel {
 		return false;
 	}
 
-	public boolean moveContent(int sx, int sy, int dx, int dy) {
+	public boolean moveMainChar(int sx, int sy, int dx, int dy) {
 		if (!this.validPosition(sx, sy) || !this.validPosition(dx, dy))
 			return false;
 		if (this.isTileEmpty(dx, dy)) {
@@ -163,7 +174,7 @@ public class MapModel {
 			this.getTile(sx, sy).setContent(null);
 			return true;
 		} else if (this.isContentEnemy(dx, dy)) {
-			this.attackContent();
+			this.attackContent(this.getTile(sx, sy),this.getTile(dx, dy));
 		} else if (this.isContentTeasure(dx, dy)) {
 			this.teasureContent(sx, sy, dx, dy);
 		} else if (this.isContentStair(dx, dy)) {
@@ -172,9 +183,66 @@ public class MapModel {
 		}
 		return false;
 	}
+	
+	/*
+	 *  1 = MainChar DEAD
+	 * -1 = Null
+	 *  0 = Move
+	 *  2 = Attack
+	 */
+	public int moveEnemy(int sx, int sy, int dx, int dy) {
+		int[] checkMain = this.checkAround(sx, sy);
+		if (checkMain[0] != -1) {
+			System.out.println("Il nemico Attacca!!!!!! D'oh");
+			Tile tEnemy = this.getTile(sx, sy);
+			Tile tMain = this.getTile(checkMain[0], checkMain[1]);
+			if (this.attackContent(tEnemy, tMain)) {
+				this.setMainAlive(false);
+				return 1; 
+			}
+			return 2;
+		} else if (!this.validPosition(sx, sy) || !this.validPosition(dx, dy)) {
+			return -1;
+		} else if (this.isTileEmpty(dx, dy)) {
+			this.getTile(dx, dy).setContent(this.getTile(sx, sy).getContent());
+			this.getTile(sx, sy).setContent(null);
+			return 0;
+		} else if (this.getTile(dx, dy).getContent().getClass().equals(ChestModel.class)
+				|| this.getTile(dx, dy).getContent().getClass().equals(EnemyModel.class))
+			return -1;
+		return -1;
+	}
 
-	public void attackContent() {
-		// se si sta andando nella casella con un nemico shish
+	private int[] checkAround(int x, int y) {
+		int[] rs = new int[2];
+
+		for (int j = y - 1; j <= y + 1; j++) {
+			for (int k = x - 1; k <= x + 1; k++) {
+				if (this.validPosition(k, j)) {
+					if (this.getTile(k, j).getContent() != null && this.getTile(k, j).getContent().getClass() == (MainCharModel.class)) {
+						rs[0] = k;
+						rs[1] = j;
+						return rs;
+					}
+				}
+			}
+		}
+		rs[0] = -1;
+		rs[1] = -1;
+
+		return rs;
+	}
+
+	private boolean attackContent(Tile e1, Tile e2) {
+		Entity a = (Entity) e1.getContent();
+		Entity d = (Entity) e2.getContent();
+		System.out.println(a.getClass());
+		int dmg = a.attack();
+		System.out.println("Danno effettuato: " + dmg);
+		d.takeDamage(dmg);
+		if (d.isDead()) return true;
+		
+		return false;
 	}
 
 	public void teasureContent(int sx, int sy, int dx, int dy) {

@@ -72,20 +72,20 @@ public class EnemyModel implements Entity {
 
 	@Override
 	public void takeDamage(int d) {
-		int dmg = this.vit - d;
-		setVit(dmg);
+		this.vit -= d;
 	}
 
 	@Override
 	public int attack() {
 		if (hitSuccess())
-			return (int) (Math.random() * str);
+			return (int) ((Math.random() * str) + 1);
 		return 0;
 	}
 
 	private boolean hitSuccess() {
-		int s = (int) (Math.random() * 100) + lck;
-		if (s >= 20)
+		int s = (int) ((Math.random() * 100) + lck);
+		System.out.println(s);
+		if (s >= 50)
 			return true;
 		return false;
 	}

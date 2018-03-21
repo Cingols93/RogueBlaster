@@ -1,5 +1,8 @@
 package it.consoft.rogueblaster.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Controller;
@@ -27,6 +30,7 @@ public class GameController {
 	private MapModel map = new MapModel();
 
 	private int[] charCoords;
+	private List<int[]> enemiesCoords;
 
 	@RequestMapping(value = "/start")
 	@ResponseBody
@@ -79,13 +83,16 @@ public class GameController {
 	private void setup() {
 		EnemyModel enemy;
 		ChestModel chest;
+		this.enemiesCoords = new ArrayList<int[]>();
+
 		int[] coords = this.generateCoords();
 		while (!this.map.setTileContent(coords[0], coords[1], this.mc)) {
-			System.out
-					.println("Inserimento mainCharacter non riuscito alle coordinate: " + coords[0] + "," + coords[1]);
+			System.out.println("Inserimento mainCharacter non riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 		}
 		this.charCoords = coords;
+		this.map.setMainAlive(true);
 		System.out.println("Inserimento mainCharacter riuscito alle coordinate: " + coords[0] + "," + coords[1]);
+		// blocco nemico
 		for (int i = 0; i < this.map.getMaxEnemy(); i++) {
 			enemy = new EnemyModel();
 			coords = this.generateCoords();
@@ -94,9 +101,11 @@ public class GameController {
 						"Inserimento Enemy " + i + " non riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 				coords = this.generateCoords();
 			}
+			this.enemiesCoords.add(coords);
 			System.out.println("Inserimento Enemy " + i + " riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 		}
-
+		
+		// blocco tesoro
 		for (int i = 0; i < this.map.getMaxTeasure(); i++) {
 			chest = new ChestModel((AttrEnum.getById((int) (Math.random() * 4) + 1)));
 			coords = this.generateCoords();
@@ -123,12 +132,30 @@ public class GameController {
 		try {
 			int newX = this.charCoords[0] + ((int) (Math.random() * 3)) - 1;
 			int newY = this.charCoords[1] + ((int) (Math.random() * 3)) - 1;
-			if (this.map.moveContent(this.charCoords[0], this.charCoords[1], newX, newY)) {
-				this.charCoords[0] = newX;
-				this.charCoords[1] = newY;
+			while (!this.map.moveMainChar(this.charCoords[0], this.charCoords[1], newX, newY)) {
+				newX = this.charCoords[0] + ((int) (Math.random() * 3)) - 1;
+				newY = this.charCoords[1] + ((int) (Math.random() * 3)) - 1;
 			}
-			System.out.println("New coords: " + newX + " " + newY);
+			this.charCoords[0] = newX;
+			this.charCoords[1] = newY;
+			for (int i = 0; i < this.enemiesCoords.size(); i++) {
+				newX = this.enemiesCoords.get(i)[0] + ((int) (Math.random() * 3)) - 1;
+				newY = this.enemiesCoords.get(i)[1] + ((int) (Math.random() * 3)) - 1;
+				while (this.map.moveEnemy(this.enemiesCoords.get(i)[0], this.enemiesCoords.get(i)[1], newX, newY) == -1 ) {
+					newX = this.enemiesCoords.get(i)[0] + ((int) (Math.random() * 3)) - 1;
+					newY = this.enemiesCoords.get(i)[1] + ((int) (Math.random() * 3)) - 1;
+				}
+				if (!this.map.isMainAlive()) {
+					System.exit(0);
+				}
+				this.enemiesCoords.get(i)[0] = newX;
+				this.enemiesCoords.get(i)[1] = newY;
+			}
 			System.out.println(this.mc.toJSON());
+			System.out.println("Main: " + this.charCoords[0] + " " + this.charCoords[1]);
+			System.out.println("Enemy one: " + this.enemiesCoords.get(1)[0] + " " + this.enemiesCoords.get(1)[1]);
+			System.out.println("Enemy two: " + this.enemiesCoords.get(0)[0] + " " + this.enemiesCoords.get(0)[1]);
+			System.out.println("Main Life: " + this.mc.getVit());
 			System.out.println(this.map);
 		} catch (IndexOutOfBoundsException e) {
 			return;
