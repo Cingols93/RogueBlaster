@@ -1,9 +1,11 @@
 package it.consoft.rogueblaster.service;
 
-import it.consoft.rogueblaster.model.UserModel;
+import it.consoft.rogueblaster.model.User;
 
 public interface UserService {
-	UserModel save(UserModel user);
-	
-	
+
+	User saveUser(User user);
+
+	User findByUsername(String username);
+
 }

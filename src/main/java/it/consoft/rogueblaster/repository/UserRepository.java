@@ -2,9 +2,10 @@ package it.consoft.rogueblaster.repository;
 
 import org.springframework.data.repository.CrudRepository;
 
-import it.consoft.rogueblaster.model.UserModel;
+import it.consoft.rogueblaster.model.User;
 
-public interface UserRepository extends CrudRepository<UserModel, Integer> {
+public interface UserRepository extends CrudRepository<User, Integer> {
 
-	UserModel findByUsernameAndPassword(String username, String password);
+	User findByUsername(String username);
+
 }
