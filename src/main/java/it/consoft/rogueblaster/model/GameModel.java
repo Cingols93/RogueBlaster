@@ -5,6 +5,9 @@ import java.util.List;
 
 import org.springframework.scheduling.annotation.Scheduled;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+
 import it.consoft.rogueblaster.model.enumeration.AttrEnum;
 import it.consoft.rogueblaster.model.enumeration.MapSizeEnum;
 
@@ -17,37 +20,23 @@ public class GameModel {
 	private List<int[]> enemiesCoords;
 
 	public GameModel() {
-		this.startGameGet(1);
+
 	}
-	
-	public GameModel(int size) {
-		this.startGameGet(size);
+
+	public MainCharModel getMc() {
+		return mc;
 	}
-	
-	public String startGameGet(int sz) {
-		this.mc = new MainCharModel();
-		if (sz > 0) {
-			switch (sz) {
-			case 1: {
-				this.map = new MapModel(MapSizeEnum.SMALL);
-				break;
-			}
-			case 2: {
-				this.map = new MapModel(MapSizeEnum.MEDIUM);
-				break;
-			}
-			case 3: {
-				this.map = new MapModel(MapSizeEnum.BIG);
-				break;
-			}
-			default: {
-				break;
-			}
-			}
-			this.setup();
-			return this.map.toJSON();
-		}
-		return this.mc.toJSON();
+
+	public void setMc(MainCharModel mc) {
+		this.mc = mc;
+	}
+
+	public MapModel getMap() {
+		return map;
+	}
+
+	public void setMap(MapModel map) {
+		this.map = map;
 	}
 
 	public void gameOver() {
@@ -58,18 +47,20 @@ public class GameModel {
 
 	}
 
-	private void setup() {
+	public void setup(MapModel m, MainCharModel mChar) {
+		this.map = m;
+		this.mc = mChar;
 		EnemyModel enemy;
 		ChestModel chest;
 		this.enemiesCoords = new ArrayList<int[]>();
-
 		int[] coords = this.generateCoords();
-		while (!this.map.setTileContent(coords[0], coords[1], this.mc)) {
+		while (!this.map.setTileContent(coords[0], coords[1], mChar)) {
 			System.out
 					.println("Inserimento mainCharacter non riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 		}
 		this.charCoords = coords;
 		this.map.setMainAlive(true);
+		System.out.println(mChar.toJSON());
 		System.out.println("Inserimento mainCharacter riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 		// blocco nemico
 		for (int i = 0; i < this.map.getMaxEnemy(); i++) {
@@ -82,7 +73,8 @@ public class GameModel {
 			}
 			this.enemiesCoords.add(coords);
 			System.out.println("Inserimento Enemy " + i + " riuscito alle coordinate: " + coords[0] + "," + coords[1]);
-		} System.out.println(this.enemiesCoords.toString());
+		}
+		System.out.println(this.enemiesCoords.toString());
 
 		// blocco tesoro
 		for (int i = 0; i < this.map.getMaxTeasure(); i++) {
@@ -141,7 +133,7 @@ public class GameModel {
 			}
 			turn = -1;
 			for (int i = 0; i < this.enemiesCoords.size(); i++) {
-				System.out.println("Mossa del nemico " + i );
+				System.out.println("Mossa del nemico " + i);
 				while (turn == -1) {
 					newX = this.enemiesCoords.get(i)[0] + ((int) (Math.random() * 3)) - 1;
 					newY = this.enemiesCoords.get(i)[1] + ((int) (Math.random() * 3)) - 1;
@@ -172,6 +164,11 @@ public class GameModel {
 		} catch (IndexOutOfBoundsException e) {
 			return;
 		}
+	}
+
+	public String toJSON() {
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(this);
 	}
 
 }

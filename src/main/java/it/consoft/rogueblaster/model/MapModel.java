@@ -20,7 +20,7 @@ public class MapModel {
 
 	private MapSizeEnum size;
 	private int maxEnemy;
-	private int maxTeasure;
+	private int maxChest;
 
 	private boolean mainAlive;
 	private boolean enemySlayed;
@@ -38,7 +38,7 @@ public class MapModel {
 		}
 		this.size = MapSizeEnum.SMALL;
 		this.maxEnemy = Constant.MAX_ENEMY_SPAWN_SMALL;
-		this.maxTeasure = Constant.MAX_TEASURES_SMALL;
+		this.maxChest = Constant.MAX_TEASURES_SMALL;
 	}
 
 	public MapModel(MapSizeEnum mapSize) {
@@ -55,13 +55,13 @@ public class MapModel {
 		this.size = mapSize;
 		if (mapSize.equals(MapSizeEnum.SMALL)) {
 			this.maxEnemy = Constant.MAX_ENEMY_SPAWN_SMALL;
-			this.maxTeasure = Constant.MAX_TEASURES_SMALL;
+			this.maxChest = Constant.MAX_TEASURES_SMALL;
 		} else if (mapSize.equals(MapSizeEnum.MEDIUM)) {
 			this.maxEnemy = Constant.MAX_ENEMY_SPAWN_MEDIUM;
-			this.maxTeasure = Constant.MAX_TEASURES_MEDIUM;
+			this.maxChest = Constant.MAX_TEASURES_MEDIUM;
 		} else {
 			this.maxEnemy = Constant.MAX_ENEMY_SPAWN_BIG;
-			this.maxTeasure = Constant.MAX_TEASURES_BIG;
+			this.maxChest = Constant.MAX_TEASURES_BIG;
 		}
 	}
 
@@ -106,11 +106,11 @@ public class MapModel {
 	}
 
 	public int getMaxTeasure() {
-		return maxTeasure;
+		return maxChest;
 	}
 
 	public void setMaxTeasure(int maxTeasure) {
-		this.maxTeasure = maxTeasure;
+		this.maxChest = maxTeasure;
 	}
 
 	public boolean isMainAlive() {
@@ -285,8 +285,8 @@ public class MapModel {
 	}
 
 	public String toJSON() {
-		Gson gson = new GsonBuilder().setPrettyPrinting().serializeNulls().create();
-		return gson.toJson(this.map);
+		Gson gson = new GsonBuilder().create();
+		return gson.toJson(this);
 	}
 
 }

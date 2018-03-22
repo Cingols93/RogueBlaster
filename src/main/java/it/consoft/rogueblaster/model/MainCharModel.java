@@ -182,6 +182,8 @@ public class MainCharModel implements Entity {
 		Gson gson = new GsonBuilder().create();
 		return gson.toJson(this);
 	}
+	
+	
 
 	@Override
 	public String toString() {
