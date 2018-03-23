@@ -9,11 +9,10 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 
 import it.consoft.rogueblaster.model.enumeration.AttrEnum;
-import it.consoft.rogueblaster.model.enumeration.MapSizeEnum;
 
 public class GameModel {
 
-	private MainCharModel mc = null;
+	private MainCharModel character = null;
 	private MapModel map = new MapModel();
 
 	private int[] charCoords;
@@ -24,11 +23,11 @@ public class GameModel {
 	}
 
 	public MainCharModel getMc() {
-		return mc;
+		return character;
 	}
 
 	public void setMc(MainCharModel mc) {
-		this.mc = mc;
+		this.character = mc;
 	}
 
 	public MapModel getMap() {
@@ -49,7 +48,7 @@ public class GameModel {
 
 	public void setup(MapModel m, MainCharModel mChar) {
 		this.map = m;
-		this.mc = mChar;
+		this.character = mChar;
 		EnemyModel enemy;
 		ChestModel chest;
 		this.enemiesCoords = new ArrayList<int[]>();
@@ -157,9 +156,9 @@ public class GameModel {
 				}
 				turn = -1;
 			}
-			System.out.println(this.mc.toJSON());
+			System.out.println(this.character.toJSON());
 			System.out.println("Main: " + this.charCoords[0] + " " + this.charCoords[1]);
-			System.out.println("Main Life: " + this.mc.getVit());
+			System.out.println("Main Life: " + this.character.getVit());
 			System.out.println(this.map);
 		} catch (IndexOutOfBoundsException e) {
 			return;

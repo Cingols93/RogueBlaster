@@ -1,8 +1,6 @@
 package it.consoft.rogueblaster.controller;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
+import org.springframework.context.annotation.Scope;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -15,22 +13,16 @@ import it.consoft.rogueblaster.model.enumeration.MapSizeEnum;
 
 @RestController
 @RequestMapping("/game")
+@Scope(value = "session")
 public class GameController {
 
-	@GetMapping("/getcharacter")
-	public String getCharacter(HttpServletRequest request, HttpServletResponse response) {
-		MainCharModel mc = (MainCharModel) request.getSession().getAttribute("mc");
-		if (mc == null) {
-			mc = new MainCharModel();
-			request.getSession().setAttribute("mc", mc);
-		}
-		return mc.toJSON();
+	public MainCharModel createCharacter() {
+		MainCharModel mc = new MainCharModel();
+		return mc;
 	}
 
-	@GetMapping("/getmap")
-	public String start(@RequestParam(value = "sz", required = false) String sz, HttpServletRequest request,
-			HttpServletResponse response) {
-		MapModel map = (MapModel) request.getSession().getAttribute("map");
+	public MapModel createMap(String sz) {
+		MapModel map = null;
 		if (map == null) {
 			switch (sz) {
 			case "1": {
@@ -46,21 +38,16 @@ public class GameController {
 				break;
 			}
 			}
-			request.getSession().setAttribute("map", map);
 		}
-		return map.toJSON();
+		return map;
 	}
 
 	@GetMapping("/getgame")
-	public String getGame(HttpServletRequest request, HttpServletResponse response) {
-		GameModel game = (GameModel) request.getSession().getAttribute("game");
-		MainCharModel mc = (MainCharModel) request.getSession().getAttribute("mc");
-		MapModel map = (MapModel) request.getSession().getAttribute("map");
-		if (game == null) {
-			game = new GameModel();
-			game.setup(map, mc);
-			request.getSession().setAttribute("game", game);
-		}
+	public String getGame(@RequestParam(value = "sz", required = false) String sz) {
+		GameModel game = new GameModel();
+		MainCharModel mc = this.createCharacter();
+		MapModel map = this.createMap(sz);
+		game.setup(map, mc);
 		return game.toJSON();
 	}
 

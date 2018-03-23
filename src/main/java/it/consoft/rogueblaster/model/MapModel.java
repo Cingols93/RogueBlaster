@@ -13,7 +13,7 @@ import it.consoft.rogueblaster.util.Tile;
 
 public class MapModel {
 
-	List<List<Tile>> map;
+	List<List<Tile>> matrix;
 
 	private int width;
 	private int height;
@@ -28,13 +28,13 @@ public class MapModel {
 	public MapModel() {
 		this.width = MapSizeEnum.SMALL.getWidth();
 		this.height = MapSizeEnum.SMALL.getHeight();
-		this.map = new ArrayList<List<Tile>>();
+		this.matrix = new ArrayList<List<Tile>>();
 		for (int i = 0; i < this.height; i++) {
 			ArrayList<Tile> row = new ArrayList<Tile>();
 			for (int j = 0; j < this.width; j++) {
 				row.add(new Tile(j, i));
 			}
-			this.map.add(row);
+			this.matrix.add(row);
 		}
 		this.size = MapSizeEnum.SMALL;
 		this.maxEnemy = Constant.MAX_ENEMY_SPAWN_SMALL;
@@ -44,13 +44,13 @@ public class MapModel {
 	public MapModel(MapSizeEnum mapSize) {
 		this.width = mapSize.getWidth();
 		this.height = mapSize.getHeight();
-		this.map = new ArrayList<List<Tile>>();
+		this.matrix = new ArrayList<List<Tile>>();
 		for (int i = 0; i < this.height; i++) {
 			ArrayList<Tile> row = new ArrayList<Tile>();
 			for (int j = 0; j < this.width; j++) {
 				row.add(new Tile(j, i));
 			}
-			this.map.add(row);
+			this.matrix.add(row);
 		}
 		this.size = mapSize;
 		if (mapSize.equals(MapSizeEnum.SMALL)) {
@@ -66,11 +66,11 @@ public class MapModel {
 	}
 
 	public List<List<Tile>> getMap() {
-		return map;
+		return matrix;
 	}
 
 	public void setMap(List<List<Tile>> map) {
-		this.map = map;
+		this.matrix = map;
 	}
 
 	public int getWidth() {
@@ -138,25 +138,25 @@ public class MapModel {
 	}
 
 	public Tile getTile(int x, int y) {
-		return this.map.get(y).get(x);
+		return this.matrix.get(y).get(x);
 	}
 
 	private boolean isTileEmpty(int x, int y) {
-		if (this.map.get(y).get(x).getContent() == null)
+		if (this.matrix.get(y).get(x).getContent() == null)
 			return true;
 		else
 			return false;
 	}
 
 	public boolean isContentEnemy(int x, int y) {
-		if (this.map.get(y).get(x).getContent().getClass() == EnemyModel.class)
+		if (this.matrix.get(y).get(x).getContent().getClass() == EnemyModel.class)
 			return true;
 		else
 			return false;
 	}
 
 	public boolean isContentTeasure(int x, int y) {
-		if (this.map.get(y).get(x).getContent().getClass() == ChestModel.class)
+		if (this.matrix.get(y).get(x).getContent().getClass() == ChestModel.class)
 			return true;
 		else
 			return false;
@@ -261,8 +261,8 @@ public class MapModel {
 	}
 
 	public void teasureContent(int sx, int sy, int dx, int dy) {
-		ChestModel c = (ChestModel) this.map.get(dy).get(dx).getContent();
-		MainCharModel mc = (MainCharModel) this.map.get(sy).get(sx).getContent();
+		ChestModel c = (ChestModel) this.matrix.get(dy).get(dx).getContent();
+		MainCharModel mc = (MainCharModel) this.matrix.get(sy).get(sx).getContent();
 		this.getTile(dx, dy).setContent(mc);
 		this.getTile(sx, sy).setContent(null);
 		mc.powerUp(c);

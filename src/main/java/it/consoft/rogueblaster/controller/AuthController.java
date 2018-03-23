@@ -1,5 +1,7 @@
 package it.consoft.rogueblaster.controller;
 
+import java.util.logging.Logger;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -22,10 +24,13 @@ import it.consoft.rogueblaster.model.RoleUser;
 import it.consoft.rogueblaster.model.User;
 import it.consoft.rogueblaster.service.UserService;
 import it.consoft.rogueblaster.service.auth.AuthService;
+import it.consoft.rogueblaster.service.auth.CustomUserDetailsService;
 
 @RestController
 public class AuthController {
 
+	private static final Logger logger = Logger.getLogger(CustomUserDetailsService.class.getName());
+	
 	@Autowired
 	private AuthService authService;
 
@@ -39,7 +44,8 @@ public class AuthController {
 	public UserDetails authenticate(@RequestBody User principal, HttpSession session) throws Exception {
 
 		UserDetails ud = authService.authenticate(principal);
-
+		session.isNew();
+		logger.warning("Sessione utente " + session.getId());
 		session.setAttribute("user", userService.findByUsername(ud.getUsername()));
 		return ud;
 	}
@@ -56,6 +62,7 @@ public class AuthController {
 	public void logoutPage(HttpServletRequest request, HttpServletResponse response) {
 		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
 		if (auth != null) {
+			request.getSession().invalidate();
 			new SecurityContextLogoutHandler().logout(request, response, auth);
 		}
 	}
