@@ -84,8 +84,7 @@ public class EnemyModel implements Entity {
 
 	private boolean hitSuccess() {
 		int s = (int) ((Math.random() * 100) + lck);
-		System.out.println(s);
-		if (s >= 50)
+		if (s >= 50)	
 			return true;
 		return false;
 	}
