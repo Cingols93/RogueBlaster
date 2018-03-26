@@ -17,6 +17,7 @@ public class GameModel {
 
 	private int[] charCoords;
 	private List<int[]> enemiesCoords;
+	private List<int[]> chestsCoords;
 
 	public GameModel() {
 
@@ -52,6 +53,7 @@ public class GameModel {
 		EnemyModel enemy;
 		ChestModel chest;
 		this.enemiesCoords = new ArrayList<int[]>();
+		this.chestsCoords = new ArrayList<int[]>();
 		int[] coords = this.generateCoords();
 		while (!this.map.setTileContent(coords[0], coords[1], mChar)) {
 			System.out
@@ -84,6 +86,7 @@ public class GameModel {
 						"Inserimento Teasure " + i + " non riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 				coords = this.generateCoords();
 			}
+			this.chestsCoords.add(coords);
 			System.out
 					.println("Inserimento Teasure " + i + " riuscito alle coordinate: " + coords[0] + "," + coords[1]);
 		}
