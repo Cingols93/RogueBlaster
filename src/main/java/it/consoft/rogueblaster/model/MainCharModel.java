@@ -14,7 +14,7 @@ public class MainCharModel implements Entity {
 	private int vit;
 	private int lck;
 
-	private final String indetifyJSON = Constant.MAINCHAR;
+	private final String identifyJSON = Constant.MAINCHAR;
 	private int identifyCharJSON;
 
 	private String name;
@@ -182,16 +182,14 @@ public class MainCharModel implements Entity {
 		Gson gson = new GsonBuilder().create();
 		return gson.toJson(this);
 	}
-	
-	
 
 	@Override
 	public String toString() {
 		return Constant.MAINCHAR;
 	}
 
-	public String getIndetifyJSON() {
-		return indetifyJSON;
+	public String getIdentifyJSON() {
+		return identifyJSON;
 	}
 
 }

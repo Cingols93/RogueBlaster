@@ -7,7 +7,7 @@ public class ChestModel {
 	private AttrEnum attr;
 	private int mod;
 
-	private final String indetifyJSON = Constant.CHEST;
+	private final String identifyJSON = Constant.CHEST;
 
 	public ChestModel(AttrEnum a) {
 		this.attr = a;
@@ -42,8 +42,8 @@ public class ChestModel {
 		return Constant.CHEST;
 	}
 
-	public String getIndetifyJSON() {
-		return indetifyJSON;
+	public String getIdentifyJSON() {
+		return identifyJSON;
 	}
 
 }

@@ -9,7 +9,7 @@ public class EnemyModel implements Entity {
 	private int vit;
 	private int lck;
 
-	private final String indetifyJSON = Constant.ENEMY;
+	private final String identifyJSON = Constant.ENEMY;
 
 	public EnemyModel() {
 		this.randomizeClassAttr();
@@ -94,8 +94,8 @@ public class EnemyModel implements Entity {
 		return Constant.ENEMY;
 	}
 
-	public String getIndetifyJSON() {
-		return indetifyJSON;
+	public String getIdentifyJSON() {
+		return this.identifyJSON;
 	}
 
 	private void generateAttr(int i) {
