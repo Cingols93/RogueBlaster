@@ -89,6 +89,7 @@ public class MainCharModel implements Entity {
 		this.setAgi(charEnum.getAgi() + ((int) (Math.random() * 2)) - 1);
 		this.setVit(charEnum.getVit() + ((int) (Math.random() * 2)) - 1);
 		this.setLck(charEnum.getLck() + ((int) (Math.random() * 2)) - 1);
+		System.out.println("VITA GENERATA: " + this.vit);
 	}
 
 	@Override

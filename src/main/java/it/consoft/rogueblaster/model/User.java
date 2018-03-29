@@ -1,5 +1,6 @@
 package it.consoft.rogueblaster.model;
 
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
@@ -17,10 +18,13 @@ public class User {
 	
 	private String cognome;
 	
+	@Column(unique=true)
 	private String username;
 	
+	@Column(unique=true)
 	private String email;
 	
+	@Column(unique=true)
 	private String password;
 
 	public int getId() {
